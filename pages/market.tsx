@@ -75,7 +75,7 @@ const PerpMarket = () => {
       setMangoStore((state) => {
         state.selectedMarket.kind = marketType
         if (newMarket.name !== marketConfig.name) {
-          state.selectedMarket.current = null
+          // state.selectedMarket.current = null
           state.selectedMarket.config = newMarket
           state.tradeForm.price =
             state.tradeForm.tradeType === 'Limit'
@@ -95,7 +95,7 @@ const PerpMarket = () => {
   }, [router, marketConfig])
 
   return (
-    <div className={`bg-th-bkg-1 text-th-fgd-1 transition-all `}>
+    <div className={`bg-th-bkg-1 text-th-fgd-1 transition-all`}>
       {showTour && !hideTips ? <IntroTips connected={connected} /> : null}
       <TopBar />
       <MarketSelect />
