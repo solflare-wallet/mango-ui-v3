@@ -23,6 +23,8 @@ const PositionsTable = () => {
   const { reloadMangoAccount } = useMangoStore((s) => s.actions)
   const [settling, setSettling] = useState(false)
 
+  const mangoClient = useMangoStore.getState().connection.client
+  const mangoGroup = useMangoStore.getState().selectedMangoGroup.current
   const selectedMarket = useMangoStore((s) => s.selectedMarket.current)
   const selectedMarketConfig = useMangoStore((s) => s.selectedMarket.config)
   const price = useMangoStore((s) => s.tradeForm.price)
@@ -51,8 +53,11 @@ const PositionsTable = () => {
 
   const handleSettleAll = async () => {
     setSettling(true)
+    const mangoAccounts = await mangoClient.getAllMangoAccounts(mangoGroup)
     await Promise.all(
-      unsettledPositions.map((p) => settlePnl(p.perpMarket, p.perpAccount, t))
+      unsettledPositions.map((p) =>
+        settlePnl(p.perpMarket, p.perpAccount, t, mangoAccounts)
+      )
     )
     await reloadMangoAccount()
     setSettling(false)
