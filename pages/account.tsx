@@ -33,7 +33,7 @@ import Select from '../components/Select'
 import { useRouter } from 'next/router'
 import { PublicKey } from '@solana/web3.js'
 
-export async function getServerSideProps({ locale }) {
+export async function getStaticProps({ locale }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
@@ -79,14 +79,6 @@ export default function Account() {
   }, [])
   const handleCloseCloseAccountModal = useCallback(() => {
     setShowCloseAccountModal(false)
-  }, [])
-
-  useEffect(() => {
-    // @ts-ignore
-    if (window.solana) {
-      // @ts-ignore
-      window.solana.connect({ onlyIfTrusted: true })
-    }
   }, [])
 
   useEffect(() => {

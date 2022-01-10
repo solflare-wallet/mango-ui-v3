@@ -15,11 +15,12 @@ module.exports = {
       body: ['Lato, sans-serif'],
     },
     extend: {
+      animation: {
+        shake: 'shake 0.4s linear 4',
+        'spin-fast': 'spin 0.5s linear infinite',
+      },
       cursor: {
         help: 'help',
-      },
-      fontSize: {
-        xxs: '.65rem',
       },
       colors: {
         'light-theme': {
@@ -50,9 +51,9 @@ module.exports = {
           'bkg-2': '#1B1B1F',
           'bkg-3': '#27272B',
           'bkg-4': '#38383D',
-          'fgd-1': '#F7F7F7',
-          'fgd-2': '#E7E7E7',
-          'fgd-3': '#DADADA',
+          'fgd-1': '#E1E1E1',
+          'fgd-2': '#D1D1D1',
+          'fgd-3': '#B3B3B3',
           'fgd-4': '#878787',
         },
         'mango-theme': {
@@ -67,7 +68,7 @@ module.exports = {
           'bkg-2': '#1D1832',
           'bkg-3': '#2A2440',
           'bkg-4': '#37324D',
-          'fgd-1': '#F0EDFF',
+          'fgd-1': '#E5E3EC',
           'fgd-2': '#E5E3EC',
           'fgd-3': '#C1BED3',
           'fgd-4': '#706C81',
@@ -90,6 +91,9 @@ module.exports = {
         'th-green-muted': 'var(--green-muted)',
         'th-orange': 'var(--orange)',
       },
+      fontSize: {
+        xxs: '.65rem',
+      },
       keyframes: {
         shake: {
           '0%, 100%': {
@@ -102,9 +106,6 @@ module.exports = {
             transform: 'rotate(-6deg)',
           },
         },
-      },
-      animation: {
-        shake: 'shake 0.4s linear 4',
       },
     },
   },

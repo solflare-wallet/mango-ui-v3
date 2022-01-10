@@ -14,6 +14,8 @@ import { useRouter } from 'next/router'
 import { ViewportProvider } from '../hooks/useViewport'
 import BottomBar from '../components/mobile/BottomBar'
 import { appWithTranslation } from 'next-i18next'
+import ErrorBoundary from '../components/ErrorBoundary'
+import GlobalNotification from '../components/GlobalNotification'
 
 const MangoStoreUpdater = () => {
   useHydrateStore()
@@ -85,19 +87,30 @@ function App({ Component, pageProps }) {
 
         <link rel="manifest" href="/manifest.json"></link>
       </Head>
-      <PageTitle />
-      <MangoStoreUpdater />
-      <ThemeProvider defaultTheme="Mango">
-        <ViewportProvider>
-          <div className="bg-th-bkg-1 min-h-screen">
-            <Component {...pageProps} />
-          </div>
-          <div className="md:hidden fixed bottom-0 left-0 w-full z-20">
-            <BottomBar />
-          </div>
-          <Notifications />
-        </ViewportProvider>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ErrorBoundary>
+          <PageTitle />
+          <MangoStoreUpdater />
+        </ErrorBoundary>
+
+        <ThemeProvider defaultTheme="Mango">
+          <ViewportProvider>
+            <div className="bg-th-bkg-1 min-h-screen">
+              <ErrorBoundary>
+                <GlobalNotification />
+                <Component {...pageProps} />
+              </ErrorBoundary>
+            </div>
+            <div className="md:hidden fixed bottom-0 left-0 w-full z-20">
+              <ErrorBoundary>
+                <BottomBar />
+              </ErrorBoundary>
+            </div>
+
+            <Notifications />
+          </ViewportProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
     </>
   )
 }

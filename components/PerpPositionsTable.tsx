@@ -6,12 +6,11 @@ import { ExclamationIcon } from '@heroicons/react/outline'
 import Button from '../components/Button'
 import { useViewport } from '../hooks/useViewport'
 import { breakpoints } from './TradePageGrid'
-import { Table, Td, Th, TrBody, TrHead } from './TableElements'
+import { ExpandableRow, Table, Td, Th, TrBody, TrHead } from './TableElements'
 import { formatUsdValue } from '../utils'
 import Loading from './Loading'
 import usePerpPositions from '../hooks/usePerpPositions'
 import MarketCloseModal from './MarketCloseModal'
-import { ExpandableRow } from './TableElements'
 import PerpSideBadge from './PerpSideBadge'
 import PnlText from './PnlText'
 import { settlePnl } from './MarketPosition'
@@ -23,8 +22,9 @@ const PositionsTable = () => {
   const { reloadMangoAccount } = useMangoStore((s) => s.actions)
   const [settling, setSettling] = useState(false)
 
-  const mangoClient = useMangoStore.getState().connection.client
-  const mangoGroup = useMangoStore.getState().selectedMangoGroup.current
+  const mangoClient = useMangoStore((s) => s.connection.client)
+  const mangoGroup = useMangoStore((s) => s.selectedMangoGroup.current)
+
   const selectedMarket = useMangoStore((s) => s.selectedMarket.current)
   const selectedMarketConfig = useMangoStore((s) => s.selectedMarket.config)
   const price = useMangoStore((s) => s.tradeForm.price)
@@ -54,12 +54,12 @@ const PositionsTable = () => {
   const handleSettleAll = async () => {
     setSettling(true)
     const mangoAccounts = await mangoClient.getAllMangoAccounts(mangoGroup)
-    await Promise.all(
-      unsettledPositions.map((p) =>
-        settlePnl(p.perpMarket, p.perpAccount, t, mangoAccounts)
-      )
-    )
-    await reloadMangoAccount()
+
+    for (const p of unsettledPositions) {
+      await settlePnl(p.perpMarket, p.perpAccount, t, mangoAccounts)
+    }
+
+    reloadMangoAccount()
     setSettling(false)
   }
 
